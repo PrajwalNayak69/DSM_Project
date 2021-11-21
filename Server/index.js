@@ -83,7 +83,7 @@ company.get('/works_on', function(request, response){
       console.log("Query results(outside): " + JSON.stringify(result));
   });
 });
-//select all from works_on
+//select all from dependent
 company.get('/dependent', function(request, response){
   var result;
   fs.readFile('dependent.ejs', 'utf8', function(error, data){
@@ -96,7 +96,45 @@ company.get('/dependent', function(request, response){
       console.log("Query results(outside): " + JSON.stringify(result));
   });
 });
+// Query1
+company.get('/query1', function(request, response){
+  var result;
+  fs.readFile('query1.ejs', 'utf8', function(error, data){
+    var x = "select w.pno from works_on as w, employee as e where w.ssn=e.ssn and e.lname='smith' union select p.pno from department as d, employee as e, project as p where d.mgrssn=e.ssn and d.dno=p.dno and e.lname='smith'";
+    connection.query(x, (error, result) => {
 
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query1', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
+//Query2
+company.get('/query2', function(request, response){
+  var result;
+  fs.readFile('query2.ejs', 'utf8', function(error, data){
+    var x = "SELECT E.Fname, E.salary AS old_sal, E.salary*1.1 AS new_sal FROM employee as E, works_on as W, project as p WHERE E.SSN=W.SSN and W.Pno=p.pno and p.pname='sql'";
+    connection.query(x, (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query2', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
+//Query3
+company.get('/query3', function(request, response){
+  var result;
+  fs.readFile('query3.ejs', 'utf8', function(error, data){
+    var x = "select d.dname, sum(e.salary) as tot_sal, min(e.salary) as min_sal, max(e.salary) as max_sal, avg(e.salary) as avg_sal from employee as e, department as d where e.dno=d.dno and d.dname='is' GROUP BY d.dname, d.dno";
+    connection.query(x, (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query3', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
 
 
 
