@@ -7,13 +7,12 @@
     <title>Query1</title>
 </head>
 <body>
-    <form method='get' action="/query1submit">
-       
-        <h4>enter lname</h4>
-        
-             <input type="text" id="lname" name="lname" />
-   
-       <button>Submit</button>
- </form>
+    <table style="border: 2px solid">
+ <% data.forEach(function(item, index){ %>
+    <tr>
+        <td style="border: 2px solid; padding: 2px;"><%= item.pno %></td>  
+    </tr>
+    <% }); %>
+</table>
 </body>
 </html>
