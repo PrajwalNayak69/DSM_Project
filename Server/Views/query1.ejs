@@ -9,11 +9,15 @@
 <body>
     <form method='get' action="/query1submit">
        
-        <h4>enter lname</h4>
-        
-             <input type="text" id="lname" name="lname" />
+        <h4>select lname</h4>
+        <select name="lname" id="lname">
+            <% data.forEach(function(item, index){ %>
+                   <option value="<%= item.lname %>"><%= item.lname %></option>
+                <% }); %>
+    </select>
+        <input type="submit"/>
    
-       <button>Submit</button>
+
  </form>
 </body>
 </html>

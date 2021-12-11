@@ -103,35 +103,55 @@ company.get('/dependent', function(request, response){
 });
 // Query1
 company.get('/query1', function(request, response){
-  response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query1')
+  var result;
+  fs.readFile('query1.ejs', 'utf8', function(error, data){
+
+    connection.query('SELECT lname FROM employee', (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query1', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
 });
+//submit set for query1 
 company.get('/query1submit', function(request, response){
   var result;
   var lname = request.query.lname;
   console.log(lname);
   fs.readFile('query1submit.ejs', 'utf8', function(error, data){
-    var x = "select w.pno from works_on as w, employee as e where w.ssn=e.ssn and e.lname=? union select p.pno from department as d, employee as e, project as p where d.mgrssn=e.ssn and d.dno=p.dno and e.lname='?' ";
+    var x = "call query1(?)";
     connection.query(x,lname,(error, result) => {
 
-        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query1submit', { data: result })
-        console.log("Query results(inside): " + JSON.stringify(result));
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query1submit', { data: result[0] })
+        console.log("Query results(inside): " + JSON.stringify(result[0]));
       });
       console.log("Query results(outside): " + JSON.stringify(result));
   });
 });
 //Query2
 company.get('/query2', function(request, response){
-  response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query2')
+  var result;
+  fs.readFile('query2.ejs', 'utf8', function(error, data){
+
+    connection.query('SELECT pname FROM project', (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query2', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
 });
+//submit set for query2
 company.get('/query2submit', function(request, response){
   var result;
   var pname = request.query.pname;
   console.log(pname);
   fs.readFile('query2submit.ejs', 'utf8', function(error, data){
-    var x = "SELECT E.Fname, E.salary AS old_sal, E.salary*1.1 AS new_sal FROM employee as E, works_on as W, project as p WHERE E.SSN=W.SSN and W.Pno=p.pno and p.pname=?";
+    var x = "call query2(?)";
     connection.query(x,pname, (error, result) => {
 
-        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query2submit', { data: result })
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query2submit', { data: result[0] })
         console.log("Query results(inside): " + JSON.stringify(result));
       });
       console.log("Query results(outside): " + JSON.stringify(result));
@@ -141,10 +161,25 @@ company.get('/query2submit', function(request, response){
 company.get('/query3', function(request, response){
   var result;
   fs.readFile('query3.ejs', 'utf8', function(error, data){
-    // var x = "select d.dname, sum(e.salary) as tot_sal, min(e.salary) as min_sal, max(e.salary) as max_sal, avg(e.salary) as avg_sal from employee as e, department as d where e.dno=d.dno and d.dname='is' GROUP BY d.dname, d.dno";
-    connection.query("call query3;", (error, result) => {
 
-        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query3', { data: result[0] })
+    connection.query('SELECT dname FROM department', (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query3', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
+//query3 set for submit
+company.get('/query3submit', function(request, response){
+  var result;
+  var dname = request.query.dname;
+  console.log(dname);
+  fs.readFile('query3submit.ejs', 'utf8', function(error, data){
+    var x = "call query3(?)";
+    connection.query(x, dname, (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query3submit', { data: result[0] })
         console.log("Query results(inside): " + JSON.stringify(result[0]));
       });
       console.log("Query results(outside): " + JSON.stringify(result));
@@ -152,23 +187,51 @@ company.get('/query3', function(request, response){
 });
 //Query4
 company.get('/query4', function(request, response){
-  response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query4')
-});
-company.get("/query4submit", function (request, response){
-  var firstname = request.query.name;
-    console.log(firstname);
-    var x = "SELECT * FROM employee where fname= ?";
-    
-      fs.readFile('query4submit.ejs', 'utf8', function(error, data){
-  
-        connection.query(x, firstname,(error, result) => {
+  var result;
+  fs.readFile('query4.ejs', 'utf8', function(error, data){
 
-            response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query4submit', { data: result });
-            console.log("Query results(inside): " + JSON.stringify(result));
-          });
-          // console.log("Query results(outside): " + JSON.stringify(result));
+    connection.query('SELECT dno FROM department', (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query4', { data: result })
+        console.log("Query results(inside): " + JSON.stringify(result));
       });
+      console.log("Query results(outside): " + JSON.stringify(result));
   });
+});
+//submit set for query4 
+company.get('/query4submit', function(request, response){
+  var result;
+  var dno = request.query.dno;
+  console.log(dno);
+  fs.readFile('query4submit.ejs', 'utf8', function(error, data){
+    var x = "call query4(?)";
+    connection.query(x, dno, (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query4submit', { data: result[0] })
+        console.log("Query results(inside): " + JSON.stringify(result[0]));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
+//Query5
+company.get('/query5', function(request, response){
+ response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query5')
+});
+//submit set for query45
+company.get('/query5submit', function(request, response){
+  var result;
+  var range = request.query.range;
+  console.log(range);
+  fs.readFile('query5submit.ejs', 'utf8', function(error, data){
+    var x = "call query5(?)";
+    connection.query(x, range, (error, result) => {
+
+        response.render('/Users/prajwal/Desktop/VS code new/DSM Project/Server/Views' + '/query5submit', { data: result[0] })
+        console.log("Query results(inside): " + JSON.stringify(result[0]));
+      });
+      console.log("Query results(outside): " + JSON.stringify(result));
+  });
+});
 
 
 company.get("/", (req, res) => res.render('home')

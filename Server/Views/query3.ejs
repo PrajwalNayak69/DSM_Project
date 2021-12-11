@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Query1</title>
+    <title>Query2</title>
 </head>
 <body>
-    <table style="border: 2px solid">
- <% data.forEach(function(item, index){ %>
-    <tr>
-        <td style="border: 2px solid; padding: 2px;"><%= item.dname %></td>  
-        <td style="border: 2px solid; padding: 2px;"><%= item.tot_sal %></td>  
-        <td style="border: 2px solid; padding: 2px;"><%= item.min_sal %></td>  
-        <td style="border: 2px solid; padding: 2px;"><%= item.max_sal %></td>  
-        <td style="border: 2px solid; padding: 2px;"><%= item.avg_sal %></td>  
-    </tr>
-    <% }); %>
-</table>
+    <form method='get' action="/query3submit">
+       
+        <h4>select dname</h4>
+        <select name="dname" id="dname">
+            <% data.forEach(function(item, index){ %>
+                   <option value="<%= item.dname %>"><%= item.dname %></option>
+                <% }); %>
+    </select>
+        <input type="submit"/>
+   
+
+ </form>
 </body>
 </html>
